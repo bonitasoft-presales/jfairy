@@ -20,7 +20,7 @@ jobs:
       - name: Install Java and Maven - setup settings.xml
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'temurin'
           server-id: github
           cache: 'maven'
@@ -28,7 +28,7 @@ jobs:
       # need to be after actions/setup-java@v4
       # and repeat github server id since setting.xml is replaced
       - name: maven-settings-xml-action
-        uses: whelk-io/maven-settings-xml-action@v21
+        uses: whelk-io/maven-settings-xml-action@v22
         with:
           repositories: >
             [
