@@ -25,52 +25,77 @@ jobs:
           server-id: github
           cache: 'maven'
 
-      # need to be after actions/setup-java@v4
-      # and repeat github server id since setting.xml is replaced
-      - name: maven-settings-xml-action
+      - name: Setup maven private repositories
         uses: whelk-io/maven-settings-xml-action@v22
         with:
           repositories: >
-            [
-              {
-                "id": "bar",
-                "name": "Bonita Artifact Repository",
-                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
-                "releases": {
-                  "enabled": "true"
+              [
+                {
+                  "id": "bar",
+                  "name": "Bonita Artifact Repository",
+                  "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                  "releases": {
+                    "enabled": "true"
+                  },
+                  "snapshots": {
+                    "enabled": "false"
+                  }
                 },
-                "snapshots": {
-                  "enabled": "false"
+                {
+                  "id": "github-presales",
+                  "name": "github-presales",
+                  "url": "https://maven.pkg.github.com/bonitasoft-presales/*",
+                  "releases": {
+                    "enabled": "true"
+                  },
+                  "snapshots": {
+                    "enabled": "true"
+                  }
+                },
+                {
+                  "id": "github-laurent",
+                  "name": "github-presales",
+                  "url": "https://maven.pkg.github.com/laurentleseigneur/*",
+                  "releases": {
+                   "enabled": "true"
+                  },
+                  "snapshots": {
+                   "enabled": "true"
+                  }
                 }
-              }
-            ]
+              ]
           plugin_repositories: >
-            [
-              {
-                "id": "bar",
-                "name": "Bonita Artifact Repository",
-                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
+              [
+                {
+                  "id": "bar",
+                  "name": "Bonita Artifact Repository",
+                  "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                  "releases": {
+                    "enabled": "true"
+                  },
+                  "snapshots": {
+                    "enabled": "false"
+                  }
                 }
-              }
-            ]
+              ]
           servers: >
-            [
-              {
-                "id": "bar",
-                "username": "${{ secrets.JFROG_USER }}",
-                "password": "${{ secrets.JFROG_TOKEN }}"
-              },
-              {
-                "id": "github",
-                  "username": "${{ secrets.MVN_USER }}",
-                "password": "${{ secrets.MVN_TOKEN }}"
-              }
-            ]
+              [
+                {
+                  "id": "bar",
+                  "username": "${{ secrets.JFROG_USER }}",
+                  "password": "${{ secrets.JFROG_TOKEN }}"
+                },
+                {
+                  "id": "github-presales",
+                  "username": "${{ secrets.GHP_USER }}",
+                  "password": "${{ secrets.GHP_TOKEN }}"
+                },
+                {
+                  "id": "github-laurent",
+                  "username": "${{ secrets.GHP_USER }}",
+                  "password": "${{ secrets.GHP_TOKEN }}"
+                }
+              ]
 
       - name: Build and Test
         run: ./mvnw clean verify
