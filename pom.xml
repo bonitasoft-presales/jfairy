@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.bonitasoft.presales</groupId>
@@ -43,36 +44,15 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:https://github.com/Devskiller/jfairy</connection>
-		<developerConnection>scm:git:git@github.com:Devskiller/jfairy</developerConnection>
-		<url>https://github.com/Devskiller/jfairy</url>
+		<url>https://github.com/${github.owner}/${github.repo}</url>
+		<developerConnection>scm:git:${project.scm.url}.git</developerConnection>
+		<connection>scm:git:${project.scm.url}.git</connection>
 		<tag>HEAD</tag>
 	</scm>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>oss</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>oss</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-
-	<issueManagement>
-		<system>GitHub Issues</system>
-		<url>https://github.com/Devskiller/jfairy/issues</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>Travis</system>
-		<url>https://travis-ci.org/Devskiller/jfairy</url>
-	</ciManagement>
-
 	<properties>
+		<github.owner>bonitasoft-presales</github.owner>
+		<github.repo>jfairy</github.repo>
+
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -303,4 +283,16 @@
 		</profile>
 	</profiles>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>github</id>
+			<name>Github Package</name>
+			<url>https://maven.pkg.github.com/${github.owner}/${github.repo}</url>
+		</snapshotRepository>
+		<repository>
+			<id>github</id>
+			<name>Github Package</name>
+			<url>https://maven.pkg.github.com/${github.owner}/${github.repo}</url>
+		</repository>
+	</distributionManagement>
 </project>

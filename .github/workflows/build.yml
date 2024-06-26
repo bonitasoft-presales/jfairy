@@ -98,10 +98,10 @@ jobs:
               ]
 
       - name: Build and Test
-        run: ./mvnw clean verify
+        run: ./mvnw --batch-mode --no-transfer-progress clean verify
 
       - name: Publish to Github Package
-        run: ./mvnw --batch-mode deploy
+        run: ./mvnw --batch-mode --no-transfer-progress deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
