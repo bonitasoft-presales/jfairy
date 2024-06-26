@@ -1,0 +1,82 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Java and Maven - setup settings.xml
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: 'temurin'
+          server-id: github
+          cache: 'maven'
+
+      # need to be after actions/setup-java@v4
+      # and repeat github server id since setting.xml is replaced
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v21
+        with:
+          repositories: >
+            [
+              {
+                "id": "bar",
+                "name": "Bonita Artifact Repository",
+                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              }
+            ]
+          plugin_repositories: >
+            [
+              {
+                "id": "bar",
+                "name": "Bonita Artifact Repository",
+                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              }
+            ]
+          servers: >
+            [
+              {
+                "id": "bar",
+                "username": "${{ secrets.JFROG_USER }}",
+                "password": "${{ secrets.JFROG_TOKEN }}"
+              },
+              {
+                "id": "github",
+                  "username": "${{ secrets.MVN_USER }}",
+                "password": "${{ secrets.MVN_TOKEN }}"
+              }
+            ]
+
+      - name: Build and Test
+        run: ./mvnw clean verify
+
+      - name: Publish to Github Package
+        run: ./mvnw --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
