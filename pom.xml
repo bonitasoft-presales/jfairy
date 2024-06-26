@@ -9,46 +9,7 @@
 
 	<name>jFairy</name>
 	<description>Java fake data generator</description>
-	<url>https://github.com/Devskiller/jfairy</url>
 
-	<licenses>
-		<license>
-			<name>Apache 2</name>
-			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>jkubrynski</id>
-			<name>Jakub Kubrynski</name>
-		</developer>
-		<developer>
-			<id>mariuszs</id>
-			<name>Mariusz Smykuła</name>
-		</developer>
-		<developer>
-			<id>szpak</id>
-			<name>Marcin Zajączkowski</name>
-		</developer>
-		<developer>
-			<id>olga.maciaszek</id>
-			<name>Olga Maciaszek-Sharma</name>
-		</developer>
-		<developer>
-			<id>kdebski85</id>
-			<name>Krzysztof Dębski</name>
-		</developer>
-	</developers>
-
-	<scm>
-		<url>https://github.com/${github.owner}/${github.repo}</url>
-		<developerConnection>scm:git:${project.scm.url}.git</developerConnection>
-		<connection>scm:git:${project.scm.url}.git</connection>
-		<tag>HEAD</tag>
-	</scm>
 	<properties>
 		<github.owner>bonitasoft-presales</github.owner>
 		<github.repo>jfairy</github.repo>
@@ -222,66 +183,12 @@
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.2.0</version>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.1.1</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.8</version>
-						<extensions>true</extensions>
-						<configuration>
-							<serverId>sonatype-nexus-staging</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+	<scm>
+		<url>https://github.com/${github.owner}/${github.repo}</url>
+		<developerConnection>scm:git:${project.scm.url}.git</developerConnection>
+		<connection>scm:git:${project.scm.url}.git</connection>
+		<tag>HEAD</tag>
+	</scm>
 
 	<distributionManagement>
 		<snapshotRepository>
