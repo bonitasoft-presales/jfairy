@@ -109,11 +109,6 @@
 
 	</dependencies>
 
-
-	<build>
-
-	</build>
-
 	<scm>
 		<url>https://github.com/${github.owner}/${github.repo}</url>
 		<developerConnection>scm:git:${project.scm.url}.git</developerConnection>
