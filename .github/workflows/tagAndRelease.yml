@@ -20,43 +20,6 @@ jobs:
           server-id: github
           cache: 'maven'
 
-      - name: maven-settings-xml-action
-        uses: whelk-io/maven-settings-xml-action@v21
-        with:
-          repositories: >
-            [
-              {
-                "id": "bar",
-                "name": "Bonita Artifact Repository",
-                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
-                }
-              }
-            ]
-          plugin_repositories: >
-            [
-              {
-                "id": "bar",
-                "name": "Bonita Artifact Repository",
-                "url": "https://bonitasoft.jfrog.io/artifactory/releases",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
-                }
-              }
-            ]
-          servers: >
-            [
-              {"id": "bar","username": "${{ secrets.JFROG_USER }}","password": "${{ secrets.JFROG_TOKEN }}"},
-              {"id": "github","username": "${{ secrets.MVN_USER }}","password": "${{ secrets.GITHUB_TOKEN }}"}
-            ]
-
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
@@ -65,7 +28,9 @@ jobs:
         run: ./mvnw clean verify
 
       - name: Prepare release
-        run: ./mvnw release:prepare --batch-mode -Dusername=laurentleseigneur -Dpassword=${{ secrets.GITHUB_TOKEN }}
+        run: ./mvnw release:prepare --batch-mode --no-transfer-progress
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-release:
     name: Create Release
@@ -86,42 +51,6 @@ jobs:
           distribution: 'temurin'
           server-id: github
           cache: 'maven'
-      - name: maven-settings-xml-action
-        uses: whelk-io/maven-settings-xml-action@v21
-        with:
-          repositories: >
-            [
-              {
-                "id": "bar",
-                "name": "Bonita Artifact Repository",
-                "url": "https://bonitasoft.jfrog.io/artifactory/maven",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
-                }
-              }
-            ]
-          plugin_repositories: >
-            [
-              {
-                "id": "bar",
-                "name": "Bonita Artifact Repository",
-                "url": "https://bonitasoft.jfrog.io/artifactory/maven",
-                "releases": {
-                  "enabled": "true"
-                },
-                "snapshots": {
-                  "enabled": "false"
-                }
-              }
-            ]
-          servers: >
-            [
-              {"id": "bar","username": "${{ secrets.JFROG_USER }}","password": "${{ secrets.JFROG_TOKEN }}"},
-              {"id": "github","username": "${{ secrets.MVN_USER }}","password": "${{ secrets.GITHUB_TOKEN }}"}
-            ]
 
       - name: Configure Git user
         run: |
@@ -144,13 +73,13 @@ jobs:
         id: build-and-test
         run: |
           echo "build ${{ steps.previous-tag.outputs.tag }}"
-          ./mvnw clean verify
+          ./mvnw clean --no-transfer-progress verify
 
       - name: Get version from pom
         id: get-version
         run: |
-          VERSION=$( ./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout )
-          FINAL_NAME=$( ./mvnw help:evaluate -Dexpression=project.build.finalName -q -DforceStdout )
+          VERSION=$( ./mvnw help:evaluate --batch-mode --no-transfer-progress -Dexpression=project.version -q -DforceStdout )
+          FINAL_NAME=$( ./mvnw help:evaluate --batch-mode --no-transfer-progress -Dexpression=project.build.finalName -q -DforceStdout )
           echo "::set-output name=version::$VERSION"
           echo "::set-output name=final-name::$FINAL_NAME"
 
@@ -185,7 +114,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Publish to Github Package
-        run: ./mvnw --batch-mode deploy
+        run: ./mvnw --batch-mode --no-transfer-progress deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
