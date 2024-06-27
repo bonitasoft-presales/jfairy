@@ -118,12 +118,12 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>github</id>
+			<id>github-presales</id>
 			<name>Github Package</name>
 			<url>https://maven.pkg.github.com/${github.owner}/${github.repo}</url>
 		</snapshotRepository>
 		<repository>
-			<id>github</id>
+			<id>github-presales</id>
 			<name>Github Package</name>
 			<url>https://maven.pkg.github.com/${github.owner}/${github.repo}</url>
 		</repository>
