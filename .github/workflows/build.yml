@@ -52,7 +52,7 @@ jobs:
                 },
                 {
                   "id": "github-laurent",
-                  "name": "github-presales",
+                  "name": "github-laurent",
                   "url": "https://maven.pkg.github.com/laurentleseigneur/*",
                   "releases": {
                    "enabled": "true"
@@ -100,6 +100,4 @@ jobs:
 
       - name: Publish to Github Package
         run: ./mvnw --batch-mode --no-transfer-progress deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
 
